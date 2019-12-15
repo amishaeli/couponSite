@@ -20,7 +20,7 @@ public class CouponApi {
     // All functions below are working!!!!!!
     @Autowired
     private CouponController couponController;
-    //ghghghg
+    //ghgh
     /*http://localhost:8080/coupon
     create only Coupon without companyId
     {
