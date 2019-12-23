@@ -27,11 +27,11 @@ public class Customer implements Serializable {
     @Column(name="EMAIL", nullable = false)
     private String email;
 
-//    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "ID")
-//    @JsonIgnore
-////    @MapsId
-//    private User user;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID")
+    @JsonIgnore
+//    @MapsId
+    private User user;
 //
 //    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    private List<User> users;
@@ -101,12 +101,12 @@ public class Customer implements Serializable {
         this.email = email;
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
 //    }
 
 
@@ -116,7 +116,7 @@ public class Customer implements Serializable {
 //
 //    public void setUsers(List<User> users) {
 //        this.users = users;
-//    }
+    }
 
     public List<Purchase> getPurchases() {
         return purchases;

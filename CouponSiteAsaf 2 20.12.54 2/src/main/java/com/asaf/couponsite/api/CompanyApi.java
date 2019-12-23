@@ -2,6 +2,7 @@ package com.asaf.couponsite.api;
 
 
 import com.asaf.couponsite.entities.Company;
+import com.asaf.couponsite.entities.RegisterCompany;
 import com.asaf.couponsite.exceptions.ApplicationException;
 import com.asaf.couponsite.logic.CompanyController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,8 @@ http://localhost:8080/company
 }
  */
 	@PostMapping
-	public void createCompany(@RequestBody Company company) throws Exception {
-		companyController.createCompany(company);
+	public void createCompany(@RequestBody RegisterCompany registerCompany) throws Exception {
+		companyController.createCompany(registerCompany);
 	}
 
 	//http://localhost:8080/company/1
@@ -70,7 +71,7 @@ http://localhost:8080/company
 
 	//    http://localhost:8080/company/byName?name=apple
 	@GetMapping("/byName")
-	public List<Company> getCompanyByName(@RequestParam("name") String name) throws Exception {
+	public Company getCompanyByName(@RequestParam("name") String name) throws Exception {
 		return companyController.getCompanyByName(name);
 	}
 

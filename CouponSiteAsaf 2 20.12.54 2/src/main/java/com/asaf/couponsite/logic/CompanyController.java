@@ -2,9 +2,12 @@ package com.asaf.couponsite.logic;
 
 
 import com.asaf.couponsite.dao.ICompanyDao;
+import com.asaf.couponsite.dao.IUserDao;
 import com.asaf.couponsite.entities.Company;
 import com.asaf.couponsite.entities.Coupon;
+import com.asaf.couponsite.entities.RegisterCompany;
 import com.asaf.couponsite.entities.User;
+import com.asaf.couponsite.enums.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -16,17 +19,29 @@ public class CompanyController {
 
     @Autowired
     private ICompanyDao companyDao;
+    private IUserDao userDao;
 
-    public void createCompany(Company company) throws Exception {
-        List<User> users = company.getUsers();
-        for (User user : users) {
-            user.setCompany(company);
-        }
-        List<Coupon> coupons = company.getCoupons();
-        for (Coupon coupon :coupons) {
-        	coupon.setCompany(company);
-		}
-        companyDao.save(company);
+    public void createCompany(RegisterCompany registerCompany) throws Exception {
+        companyDao.save(registerCompany.getCompany());
+        long companyId=companyDao.getByName(registerCompany.getCompany().getName()).getId();
+
+        //consider to add delay between set to get company
+        registerCompany.getUser().getCompany().setId(companyId);
+        registerCompany.getUser().setUserType(UserType.COMPANY);
+
+        User debug= registerCompany.getUser();
+        userDao.save(registerCompany.getUser());
+
+//        User user = registerCompany.getUser();
+
+//        for (User user : users) {
+//            user.setCompany(company);
+//        }
+//        List<Coupon> coupons = company.getCoupons();
+//        for (Coupon coupon :coupons) {
+//        	coupon.setCompany(company);
+//		}
+//        companyDao.save(company);
     }
 
     public void deleteCompany(long id) throws Exception {
@@ -42,9 +57,9 @@ public class CompanyController {
         return company;
     }
 
-    public List<Company> getCompanyByName(String name) throws Exception{
-		List<Company> companies = companyDao.getByName(name);
-		if(companies.size() == 0){
+    public Company getCompanyByName(String name) throws Exception{
+		Company companies = companyDao.getByName(name);
+		if(companies == null){
 			throw new Exception("Company does not exist");
 		}
 		return companies;

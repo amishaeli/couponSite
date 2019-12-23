@@ -32,7 +32,7 @@ public class CORSFilter implements Filter {
         if (request.getMethod().equals("OPTIONS")) {
             return;
         }
-        if (request.getMethod().contains("user")) {
+        if (request.getMethod().contains("users")) {
             return;
         }
         if (request.getMethod().contains("customer")) {

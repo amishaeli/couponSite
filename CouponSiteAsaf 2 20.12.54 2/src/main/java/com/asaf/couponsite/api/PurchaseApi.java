@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/purchase")
+@RequestMapping("/purchases")
 public class PurchaseApi {
 // NEED TO ADD UPDATE, GETBYCOUPONID, GETBYCUSTOMERID
 	@Autowired

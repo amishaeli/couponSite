@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface ICompanyDao extends CrudRepository<Company, Long> {
 
-    List<Company> getByName(@Param("name") String name);
+    @Query("SELECT c FROM Company c where c.name=:name")
+    Company getByName(@Param("name") String name);
 
     @Query("SELECT c FROM Company c where c.id=:id")
     Company findByCompanyId(@Param("id") Long id);

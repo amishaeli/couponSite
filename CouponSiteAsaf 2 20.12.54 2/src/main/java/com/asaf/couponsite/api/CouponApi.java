@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/coupon")
+@RequestMapping("/coupons")
 public class CouponApi {
     // All functions below are working!!!!!!
     @Autowired
@@ -59,8 +59,13 @@ Update coupon BUT the companyId change to null
         couponController.addCoupon(addCoupon);
     }
 
-    @PutMapping
-    public void updateCoupon(@RequestBody Coupon coupon) throws Exception {
+//    @PutMapping
+//    public void updateCoupon(@RequestBody Coupon coupon) throws Exception {
+//        couponController.updateCoupon(coupon);
+//    }
+
+    @PutMapping("/{id}")
+    public void updateCoupon(@PathVariable("id") Coupon coupon) throws Exception {
         couponController.updateCoupon(coupon);
     }
 
