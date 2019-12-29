@@ -19,7 +19,8 @@ public enum ErrorType {
 	INVALID_EMAIL(613, "INVALID EMAIL", "Email address is InValid, Please enter a valid email address", false),
 	INVALID_AMOUNT(614, "INVALID AMOUNT", "Coupon's amount must be more than 0", false), 
 	INVALID_DATES(615, "INVALID DATES", "The dates you've entered are wrong", false),
-	MUST_INSERT_A_VALUE(616, "MUST INSERT A VLUE DATES", "Must insert a value", false);
+	MUST_INSERT_A_VALUE(616, "MUST INSERT A VLUE DATES", "Must insert a value", false),
+	WRONG_USER_NAME_PASS(617, "USERNAME OR PASSWORD IS WRONG", "Username or password is wrong", false);
 
 	private int errorNumber;
 	private String ErrorName;

@@ -19,29 +19,18 @@ public class CompanyController {
 
     @Autowired
     private ICompanyDao companyDao;
+    @Autowired
     private IUserDao userDao;
 
     public void createCompany(RegisterCompany registerCompany) throws Exception {
         companyDao.save(registerCompany.getCompany());
-        long companyId=companyDao.getByName(registerCompany.getCompany().getName()).getId();
 
-        //consider to add delay between set to get company
-        registerCompany.getUser().getCompany().setId(companyId);
+        registerCompany.getUser().setCompany(registerCompany.getCompany());
         registerCompany.getUser().setUserType(UserType.COMPANY);
 
-        User debug= registerCompany.getUser();
-        userDao.save(registerCompany.getUser());
+        User debug = registerCompany.getUser();
+        userDao.save(debug);
 
-//        User user = registerCompany.getUser();
-
-//        for (User user : users) {
-//            user.setCompany(company);
-//        }
-//        List<Coupon> coupons = company.getCoupons();
-//        for (Coupon coupon :coupons) {
-//        	coupon.setCompany(company);
-//		}
-//        companyDao.save(company);
     }
 
     public void deleteCompany(long id) throws Exception {

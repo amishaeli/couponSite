@@ -32,14 +32,14 @@ public class User implements Serializable {
     @JsonIgnore
     private Company company;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional=false)
-    private Customer customer;
-
-
-//    @ManyToOne
-////    @JoinColumn(name = "company_id" ,nullable = true, insertable = false, updatable = false)
-//    @JsonIgnore
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional=false)
 //    private Customer customer;
+
+
+    @ManyToOne
+//    @JoinColumn(name = "company_id" ,nullable = true, insertable = false, updatable = false)
+    @JsonIgnore
+    private Customer customer;
 
     public User() {
     }

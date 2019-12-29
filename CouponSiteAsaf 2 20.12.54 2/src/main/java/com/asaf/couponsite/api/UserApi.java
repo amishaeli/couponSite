@@ -5,7 +5,9 @@ import com.asaf.couponsite.data.LoginResponseDataObject;
 import com.asaf.couponsite.data.UserLoginDetailsDataObject;
 import com.asaf.couponsite.entities.User;
 import com.asaf.couponsite.exceptions.ApplicationException;
+import com.asaf.couponsite.exceptions.UserNotFoundException;
 import com.asaf.couponsite.logic.UserController;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +19,18 @@ public class UserApi {
 
 	@Autowired
 	private UserController userController;
+	private User currentLoggedInUser;
 
-//	http://localhost:8080/user/login
+	public User getCurrentLoggedInUser() {
+		return currentLoggedInUser;
+	}
+
+	//	http://localhost:8080/user/login
 	@PostMapping("/login")
-	public LoginResponseDataObject login(@RequestBody UserLoginDetailsDataObject userLoginDetails) throws ApplicationException {
+	public LoginResponseDataObject login(@RequestBody UserLoginDetailsDataObject userLoginDetails) throws HibernateException, UserNotFoundException {
 		System.out.println("userLoginDetails: " + userLoginDetails);
-		return userController.login(userLoginDetails.getUserName(), userLoginDetails.getPassword());
+		LoginResponseDataObject login = userController.login(userLoginDetails.getUserName(), userLoginDetails.getPassword());
+		return login;
 	}
 /*http://localhost:8080/user
 CREATE USER ONLY WITHOUT COMPANYID
@@ -52,4 +60,12 @@ CREATE USER ONLY WITHOUT COMPANYID
 	public List<User> getAllUsers() throws ApplicationException{
 		return userController.getAllUsers();
 	}
+
+//	http://localhost:8080/user/byUserName?userName=apple
+	@GetMapping("/byUserName")
+	public  User getUserByUserName(@RequestParam("userName") String userName) throws ApplicationException{
+		return userController.getUserByUserName(userName);
+	}
+
+
 }

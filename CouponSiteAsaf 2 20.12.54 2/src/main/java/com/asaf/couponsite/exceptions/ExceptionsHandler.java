@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.http.HttpServletResponse;
+
 // Exception handler class
 @RestControllerAdvice
 public class ExceptionsHandler {
@@ -16,7 +18,7 @@ public class ExceptionsHandler {
 	@ExceptionHandler
 	@ResponseBody
 	// Variable name is throwable in order to remember that it handles Exception and Error
-	public ErrorBean toResponse(Throwable throwable) {
+	public ErrorBean toResponse(Throwable throwable, HttpServletResponse response) {
 
 		//	ErrorBean errorBean;
 		if(throwable instanceof ApplicationException) {
@@ -32,13 +34,16 @@ public class ExceptionsHandler {
 				appException.printStackTrace();
 			}
 
+			response.setStatus(errorNumber);
 			return errorBean;
 		}
+
+
 
 		String errorMessage = throwable.getMessage();
 		ErrorBean errorBean = new ErrorBean(601, errorMessage, "General error");
 		throwable.printStackTrace();
-
+		response.setStatus(600);
 		return errorBean;
 	}
 

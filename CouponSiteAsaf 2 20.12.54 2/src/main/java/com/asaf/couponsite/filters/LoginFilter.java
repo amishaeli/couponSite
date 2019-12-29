@@ -6,28 +6,34 @@ import com.asaf.couponsite.data.LoggedInUserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
+import javax.servlet.ServletException;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-@Order(1)
+@Order(2)
 public class LoginFilter implements Filter{
 
 	@Autowired
 	private ICacheController cacheController;
 
+	@Override
+	public void init(FilterConfig arg0) throws ServletException {
+
+	}
+
+	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		
 
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		if (httpRequest.getMethod().equals("OPTIONS")) {
-			chain.doFilter(httpRequest, response);
-			return;
-		}
+//		if (httpRequest.getMethod().equals("OPTIONS")) {
+//			chain.doFilter(httpRequest, response);
+//			return;
+//		}
 		
 		String url = httpRequest.getRequestURL().toString();
 	
@@ -40,29 +46,30 @@ public class LoginFilter implements Filter{
 			chain.doFilter(httpRequest, response);
 			return;
 		}
-		if (url.contains("/company")) {
-			chain.doFilter(httpRequest, response);
-			return;
-		}
-		if (url.contains("/coupon")) {
-			chain.doFilter(httpRequest, response);
-			return;
-		}
-		if (url.contains("/purchase")) {
-			chain.doFilter(httpRequest, response);
-			return;
-		}
-		if (url.contains("/customer")) {
-			chain.doFilter(httpRequest, response);
-			return;
-		}
-		if (url.endsWith("/user")) {
-			chain.doFilter(httpRequest, response);
-			return;
-		}
+//		if (url.contains("/company")) {
+//			chain.doFilter(httpRequest, response);
+//			return;
+//		}
+//		if (url.contains("/coupon")) {
+//			chain.doFilter(httpRequest, response);
+//			return;
+//		}
+//		if (url.contains("/purchase")) {
+//			chain.doFilter(httpRequest, response);
+//			return;
+//		}
+//		if (url.contains("/customer")) {
+//			chain.doFilter(httpRequest, response);
+//			return;
+//		}
+//		if (url.contains("/user")) {
+//			chain.doFilter(httpRequest, response);
+//			return;
+//		}
 
 		//String token = request.getParameter("token");
 		String token = httpRequest.getHeader("Authorization");
+//		long tok = Integer.parseInt(token);
 		
 		LoggedInUserData loggedInUserData = (LoggedInUserData) cacheController.get(token);
 		if(loggedInUserData != null) {
@@ -82,9 +89,9 @@ public class LoginFilter implements Filter{
 		httpResponse.setStatus(unAuthorizedError);
 	}
 
-	public void init(FilterConfig filterConfig) throws ServletException {
-
-	}
+//	public void init(FilterConfig filterConfig) throws ServletException {
+//
+//	}
 
 	public void destroy() {
 

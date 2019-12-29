@@ -76,6 +76,15 @@ public class CouponController {
 		return coupon;
 	}
 
+
+//	public Coupon getCouponByCompanyId(long companyId) throws Exception {
+//		Coupon coupon = couponDao.getCouponByCompanyId(companyId);
+//		if (coupon == null){
+//			throw new Exception("Coupon does not exist");
+//		}
+//		return coupon;
+//	}
+
 	public void deleteCoupon(long couponId) throws Exception {
 
 		Coupon coupon = getCouponById(couponId);

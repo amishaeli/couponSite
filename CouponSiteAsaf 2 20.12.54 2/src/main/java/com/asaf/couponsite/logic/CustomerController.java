@@ -7,6 +7,7 @@ import com.asaf.couponsite.entities.Customer;
 import com.asaf.couponsite.entities.Registration;
 import com.asaf.couponsite.entities.User;
 import com.asaf.couponsite.enums.ErrorType;
+import com.asaf.couponsite.enums.UserType;
 import com.asaf.couponsite.exceptions.ApplicationException;
 import com.asaf.couponsite.utils.DateUtils;
 import com.asaf.couponsite.utils.StringValidation;
@@ -18,109 +19,94 @@ import java.util.List;
 @Controller
 public class CustomerController {
 
-	@Autowired
-	private ICustomerDao customerDao;
+    @Autowired
+    private ICustomerDao customerDao;
 
-	@Autowired
-	private IUserDao userDao;
+    @Autowired
+    private IUserDao userDao;
 
 
-	@Autowired
-	private UserController userController;
+    @Autowired
+    private UserController userController;
 
-//	public void createCustomer(Customer customer) throws ApplicationException {
-//
-//		validateCustomer(customer);
-//
-//		User user = customer.getUser();
-//		userController.createUser(user);
-//		customerDao.save(customer);
-//	}
+    public void registerCustomer(Registration registration) throws Exception {
+        customerDao.save(registration.getCustomer());
+        registration.getUser().setCustomer(registration.getCustomer());
+        registration.getUser().setUserType(UserType.CUSTOMER);
 
-//	public void createCustomer(Customer customer) throws  Exception {
-//		List<User> users = customer.getUsers();
-//		for (User user: users) {
-//			user.setCustomer(customer);
-//		}
-//		customerDao.save(customer);
-//	}
+        User debug = registration.getUser();
+        userDao.save(debug);
 
-	public void registerCustomer(Registration registration) throws  Exception {
-		User user = registration.getUser();
+    }
 
-		userDao.save(user);
-		customerDao.save(registration.getCustomer());
-		//userDao.save(registration.getUsers());
-	}
+    public void updateCustomer(Customer customer) throws ApplicationException {
 
-	public void updateCustomer(Customer customer) throws ApplicationException {
+        validateCustomer(customer);
 
-		validateCustomer(customer);
+        customerDao.save(customer);
+    }
 
-		customerDao.save(customer);
-	}
+    public Customer getCustomerById(long customerId) throws Exception {
 
-	public Customer getCustomerById(long customerId) throws Exception {
+        Customer customer = customerDao.findByCustomerId(customerId);
+        if (customer == null) {
+            throw new Exception("Customer does not exist");
+        }
+        return customer;
+    }
 
-		Customer customer = customerDao.findByCustomerId(customerId);
-		if(customer == null) {
-			throw new Exception("Customer does not exist");
-		}
-		return customer;
-	}
+    public void deleteCustomer(long customerId) throws Exception {
 
-	public void deleteCustomer(long customerId) throws Exception {
+        Customer customer = getCustomerById(customerId);
+        if (customer == null) {
+            throw new Exception("Customer does not exist");
+        }
+        customerDao.delete(customer);
+    }
 
-		Customer customer = getCustomerById(customerId);
-		if (customer == null) {
-			throw new Exception("Customer does not exist");
-		}
-		customerDao.delete(customer);
-	}
+    public List<Customer> getAllCustomers() throws ApplicationException {
 
-	public List<Customer> getAllCustomers() throws ApplicationException {
+        List<Customer> customers = (List<Customer>) customerDao.findAll();
+        return customers;
+    }
 
-		List<Customer> customers =  (List<Customer>) customerDao.findAll();
-		return customers;
-	}
+    private void validateCustomer(Customer customer) throws ApplicationException {
 
-	private void validateCustomer(Customer customer) throws ApplicationException {
+        if (customer.getFirstName() == null) {
+            throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, DateUtils.getCurrentDateAndTime()
+                    + "Error in customerController.validateCustomer(), You must insert details");
+        }
 
-		if (customer.getFirstName() == null) {
-			throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, DateUtils.getCurrentDateAndTime()
-					+ "Error in customerController.validateCustomer(), You must insert details");
-		}
+        if (customer.getFirstName().isEmpty()) {
+            throw new ApplicationException(ErrorType.MUST_ENTER_NAME, DateUtils.getCurrentDateAndTime()
+                    + "Error in customerController.validateCustomer() " + customer + "An empty name.");
+        }
 
-		if (customer.getFirstName().isEmpty()) {
-			throw new ApplicationException(ErrorType.MUST_ENTER_NAME, DateUtils.getCurrentDateAndTime()
-					+ "Error in customerController.validateCustomer() " + customer + "An empty name.");
-		}
+        if (customer.getLastName() == null) {
+            throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, DateUtils.getCurrentDateAndTime()
+                    + "Error in customerController.validateCustomer(), You must insert details");
+        }
 
-		if (customer.getLastName() == null) {
-			throw new ApplicationException(ErrorType.MUST_INSERT_A_VALUE, DateUtils.getCurrentDateAndTime()
-					+ "Error in customerController.validateCustomer(), You must insert details");
-		}
+        if (customer.getLastName().isEmpty()) {
+            throw new ApplicationException(ErrorType.MUST_ENTER_NAME, DateUtils.getCurrentDateAndTime()
+                    + "Error in customerController.validateCustomer() " + customer + "An empty name.");
+        }
 
-		if (customer.getLastName().isEmpty()) {
-			throw new ApplicationException(ErrorType.MUST_ENTER_NAME, DateUtils.getCurrentDateAndTime()
-					+ "Error in customerController.validateCustomer() " + customer + "An empty name.");
-		}
+        if (customer.getAddress() == null) {
+            throw new ApplicationException(ErrorType.MUST_ENTER_ADDRESS, DateUtils.getCurrentDateAndTime()
+                    + "Error in customerController.validateCustomer() " + customer + "Null name.");
+        }
 
-		if (customer.getAddress() == null) {
-			throw new ApplicationException(ErrorType.MUST_ENTER_ADDRESS, DateUtils.getCurrentDateAndTime()
-					+ "Error in customerController.validateCustomer() " + customer + "Null name.");
-		}
+        if (customer.getAddress().isEmpty()) {
+            throw new ApplicationException(ErrorType.MUST_ENTER_ADDRESS, DateUtils.getCurrentDateAndTime()
+                    + "Error in customerController.validateCustomer() " + customer + "The company address is empty.");
+        }
 
-		if (customer.getAddress().isEmpty()) {
-			throw new ApplicationException(ErrorType.MUST_ENTER_ADDRESS, DateUtils.getCurrentDateAndTime()
-					+ "Error in customerController.validateCustomer() " + customer + "The company address is empty.");
-		}
-
-		if(!StringValidation.isEmailAddressValid(customer.getEmail())) {
-			throw new ApplicationException(ErrorType.INVALID_EMAIL, DateUtils.getCurrentDateAndTime()
-					+ "Error in StringValidation.isEmailAddressValid(), InValid Email.");
-		}
-	}
+        if (!StringValidation.isEmailAddressValid(customer.getEmail())) {
+            throw new ApplicationException(ErrorType.INVALID_EMAIL, DateUtils.getCurrentDateAndTime()
+                    + "Error in StringValidation.isEmailAddressValid(), InValid Email.");
+        }
+    }
 
 }
 

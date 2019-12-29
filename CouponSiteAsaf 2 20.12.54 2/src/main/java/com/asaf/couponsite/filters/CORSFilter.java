@@ -30,29 +30,30 @@ public class CORSFilter implements Filter {
 
         // For HTTP OPTIONS verb/method reply with ACCEPTED status code -- per CORS handshake
         if (request.getMethod().equals("OPTIONS")) {
+            resp.setStatus(HttpServletResponse.SC_ACCEPTED);
             return;
         }
-        if (request.getMethod().contains("users")) {
-            return;
-        }
-        if (request.getMethod().contains("customer")) {
-            return;
-        }
-        if (request.getMethod().contains("company")) {
-            return;
-        }
-        if (request.getMethod().contains("purchase")) {
-            return;
-        }
-        if (request.getMethod().contains("coupon")) {
-            return;
-        }
-        if (request.getMethod().contains("add")) {
-            return;
-        }
-        if (request.getMethod().contains("registration")) {
-            return;
-        }
+//        if (request.getMethod().contains("user")) {
+//            return;
+//        }
+//        if (request.getMethod().contains("customer")) {
+//            return;
+//        }
+//        if (request.getMethod().contains("company")) {
+//            return;
+//        }
+//        if (request.getMethod().contains("purchase")) {
+//            return;
+//        }
+//        if (request.getMethod().contains("coupon")) {
+//            return;
+//        }
+//        if (request.getMethod().contains("add")) {
+//            return;
+//        }
+//        if (request.getMethod().contains("registration")) {
+//            return;
+//        }
 
         // pass the request along the filter chain
         chain.doFilter(request, servletResponse);

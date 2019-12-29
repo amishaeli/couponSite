@@ -64,8 +64,8 @@ Update coupon BUT the companyId change to null
 //        couponController.updateCoupon(coupon);
 //    }
 
-    @PutMapping("/{id}")
-    public void updateCoupon(@PathVariable("id") Coupon coupon) throws Exception {
+    @PutMapping
+    public void updateCoupon(@RequestBody Coupon coupon) throws Exception {
         couponController.updateCoupon(coupon);
     }
 
@@ -84,7 +84,7 @@ Update coupon BUT the companyId change to null
 
     //	http://localhost:8080/coupon
     @GetMapping
-    @RequestMapping
+//    @RequestMapping
     public List<Coupon> getAllCoupons() throws ApplicationException {
         return couponController.getAllCoupons();
 

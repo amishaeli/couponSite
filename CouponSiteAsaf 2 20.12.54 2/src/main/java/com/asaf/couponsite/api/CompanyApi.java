@@ -69,9 +69,10 @@ http://localhost:8080/company
 		return companyController.getCompany(id);
 	}
 
-	//    http://localhost:8080/company/byName?name=apple
+
+//	http://localhost:8080/company/byName?name=applee
 	@GetMapping("/byName")
-	public Company getCompanyByName(@RequestParam("name") String name) throws Exception {
+	public  Company getCompanyByCompanyName(@RequestParam("name") String name) throws Exception {
 		return companyController.getCompanyByName(name);
 	}
 

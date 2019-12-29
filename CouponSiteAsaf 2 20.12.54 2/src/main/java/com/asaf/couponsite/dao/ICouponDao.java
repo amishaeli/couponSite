@@ -40,4 +40,8 @@ public interface ICouponDao extends CrudRepository<Coupon, Long> {
 
 	@Query("FROM Coupon c WHERE c.price <= :couponPrice")
 	List<Coupon> findByPriceLessThan (@Param("couponPrice") float couponPrice);
+
+//	@Query("SELECT c FROM Coupon c where c.companyId=:companyId")
+//    Coupon getCouponByCompanyId(@Param("companyId")long companyId);
+
 }
