@@ -8,12 +8,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
 import javax.servlet.*;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Component
-@Order(2)
+//@Order(2)
 public class LoginFilter implements Filter{
 
 	@Autowired
@@ -24,24 +26,56 @@ public class LoginFilter implements Filter{
 
 	}
 
+//	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+//			throws IOException, ServletException {
+//
+//		HttpServletRequest req = (HttpServletRequest) request;
+//		HttpSession session = req.getSession(false);
+//		Cookie[] cookies = req.getCookies();
+//		String pageRequested = req.getRequestURL().toString();
+//		String pageMethod = req.getMethod();
+//
+//		if (req.getMethod().equals("OPTIONS")) {
+//			chain.doFilter(request, response);
+//			return;
+//		}
+//
+//
+//		if (session != null || pageRequested.endsWith("/login") || pageRequested.endsWith("/register")) {
+//			if (cookies != null) {
+//				for (Cookie cookie : cookies) {
+//					req.setAttribute(cookie.getName(), cookie.getValue());
+//				}
+//
+//			}
+//			chain.doFilter(request, response);
+//			return;
+//		}
+//
+//		HttpServletResponse res = (HttpServletResponse) response;
+//		// if the session is null, we set the status of the request to unauthorized
+//		res.setStatus(401);
+//		System.out.println("access denied");
+//	}
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		
+
 
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 //		if (httpRequest.getMethod().equals("OPTIONS")) {
 //			chain.doFilter(httpRequest, response);
 //			return;
 //		}
-		
+
 		String url = httpRequest.getRequestURL().toString();
-	
+
 		if(url.endsWith("/register")) {
 			chain.doFilter(httpRequest, response);
 			return;
 		}
-	
+
 		if(url.endsWith("/login")) {
 			chain.doFilter(httpRequest, response);
 			return;
@@ -70,7 +104,7 @@ public class LoginFilter implements Filter{
 		//String token = request.getParameter("token");
 		String token = httpRequest.getHeader("Authorization");
 //		long tok = Integer.parseInt(token);
-		
+
 		LoggedInUserData loggedInUserData = (LoggedInUserData) cacheController.get(token);
 		if(loggedInUserData != null) {
 			//			User not loggedIn
@@ -81,7 +115,7 @@ public class LoginFilter implements Filter{
 			return;
 		}
 
-		
+
 //		token is not in cach or token is null
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 
