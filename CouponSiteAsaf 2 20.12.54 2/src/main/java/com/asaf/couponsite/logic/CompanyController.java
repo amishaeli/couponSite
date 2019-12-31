@@ -28,8 +28,8 @@ public class CompanyController {
         registerCompany.getUser().setCompany(registerCompany.getCompany());
         registerCompany.getUser().setUserType(UserType.COMPANY);
 
-        User debug = registerCompany.getUser();
-        userDao.save(debug);
+        User user = registerCompany.getUser();
+        userDao.save(user);
 
     }
 

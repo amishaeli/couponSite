@@ -2,12 +2,12 @@ package com.asaf.couponsite.entities;
 
 public class AddCoupon {
     Coupon coupon;
-    Company companyId;
+    Company company;
 
 
-    public AddCoupon(Coupon coupon, Company companyId) {
+    public AddCoupon(Coupon coupon, Company company) {
         this.coupon = coupon;
-        this.companyId = companyId;
+        this.company = company;
     }
 
     public AddCoupon() {
@@ -21,11 +21,11 @@ public class AddCoupon {
         this.coupon = coupon;
     }
 
-    public Company getCompanyId() {
-        return companyId;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setCompanyId(Company companyId) {
-        this.companyId = companyId;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

@@ -1,9 +1,7 @@
 package com.asaf.couponsite.logic;
 
 
-import com.asaf.couponsite.dao.ICompanyDao;
-import com.asaf.couponsite.dao.ICouponDao;
-import com.asaf.couponsite.dao.IPurchaseDao;
+import com.asaf.couponsite.dao.*;
 import com.asaf.couponsite.data.LoggedInUserData;
 import com.asaf.couponsite.data.PurchaseData;
 import com.asaf.couponsite.entities.Coupon;
@@ -31,6 +29,12 @@ public class PurchaseController {
 	private ICouponDao couponDao;
 
 	@Autowired
+	private IUserDao userDao;
+	@Autowired
+	private ICustomerDao customerDao;
+
+
+	@Autowired
 	private CouponController couponController;
 
 	@Autowired
@@ -46,29 +50,13 @@ public class PurchaseController {
 		int updatedCouponAmount = (coupon.getAmount()) - (purchaseData.getAmount());
 		couponController.reduceCouponAmountByPurchaseAmount(couponId,updatedCouponAmount);
 
-		Customer customer = customerController.getCustomerById(purchaseData.getCustomerId());
+//		Customer customer = customerController.getCustomerById(purchaseData.getCustomerId());
+		long customerId = userData.getCustomerId();//purchaseData.getCustomerId();
+		Customer customer= customerDao.findByCustomerId(customerId);
+
 		Purchase userPurchase = new Purchase(purchaseData.getAmount(), coupon, customer);
 		purcahseDao.save(userPurchase);
 	}
-
-//	public List<Coupon> getPurchasesByCouponId (long couponId) throws ApplicationException {
-////		List<Coupon> purchasesByCouponIdList = (List<Coupon>) couponDao.findByCouponId(couponId);
-//		List<Coupon> purchasesByCouponIdList = purcahseDao.findByCouponId(couponId);
-//		if (purchasesByCouponIdList.size() == 0) {
-//			new Exception("There are no Purchases with this couponId: " + couponId);
-//		}
-//		return purchasesByCouponIdList;
-
-//		List<Customer> purchasesByCouponId = (List<Customer>) purcahseDao.findByCouponId(couponId);
-//		return purchasesByCouponId;
-//		return ;
-//	}
-
-//	public List<Coupon> getPurchasesByCustomerId(long customerId) throws ApplicationException {
-//
-//		List<Coupon> purchasesByCustomerId = (List<Coupon>) purcahseDao.findByCustomerId(customerId);
-//		return purchasesByCustomerId;
-//	}
 
 	public void deletePurchase (long purchaseId) throws ApplicationException {
 

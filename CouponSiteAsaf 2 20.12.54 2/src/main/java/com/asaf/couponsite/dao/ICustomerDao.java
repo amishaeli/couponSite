@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface ICustomerDao extends CrudRepository<Customer, Long> {
 
-
     List<Customer> getByFirstName(@Param("firstName") String name);
 
     List<Customer> getByLastName(@Param("lastName") String name);

@@ -21,20 +21,6 @@ public class CORSFilter implements Filter {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
 
-        // Authorize (allow) all domains to consume the content
-//        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Credentials","true");
-//        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin","http://localhost:4200");
-//        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST, DELETE");
-//        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Headers","Authorization, Registration, Origin, Accept, x-auth-token, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-
-
-        // Authorize (allow) all domains to consume the content
-//        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Credentials","true");
-//        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin","http://localhost:4200");
-//        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST,DELETE");
-//        ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Headers","Origin, Accept, x-auth-token, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-
-
         ((HttpServletResponse) servletResponse).setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
         ((HttpServletResponse) servletResponse).setHeader("Access-Control-Allow-Credentials", "true");
         ((HttpServletResponse) servletResponse).setHeader("Access-Control-Allow-Methods", "GET, OPTIONS, HEAD, PUT, POST,DELETE");
@@ -47,27 +33,6 @@ public class CORSFilter implements Filter {
             resp.setStatus(HttpServletResponse.SC_ACCEPTED);
             return;
         }
-//        if (request.getMethod().contains("user")) {
-//            return;
-//        }
-//        if (request.getMethod().contains("customer")) {
-//            return;
-//        }
-//        if (request.getMethod().contains("company")) {
-//            return;
-//        }
-//        if (request.getMethod().contains("purchase")) {
-//            return;
-//        }
-//        if (request.getMethod().contains("coupon")) {
-//            return;
-//        }
-//        if (request.getMethod().contains("add")) {
-//            return;
-//        }
-//        if (request.getMethod().contains("registration")) {
-//            return;
-//        }
 
         // pass the request along the filter chain
         chain.doFilter(request, servletResponse);

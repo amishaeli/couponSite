@@ -40,13 +40,12 @@ public class CouponController {
 		couponDao.save(coupon);
 	}
 
-	public void addCoupon(AddCoupon addCoupon) throws Exception {
-//		Coupon coupon = addCoupon.getCoupon();
-//		couponDao.save(addCoupon.getCoupon());
-//		Coupon companyId = companyDao.findByCompanyId(getCouponById(id));
-//		Company id = addCoupon.getCompanyId();
-		companyDao.save(companyId);
-		couponDao.save(addCoupon.getCoupon());
+	public void addCoupon(Coupon coupon, long companyId) throws Exception {
+
+		Company company = companyDao.findByCompanyId(companyId);
+		coupon.setCompany(company);
+
+		couponDao.save(coupon);
 	}
 
 	public void updateCoupon(Coupon coupon) throws Exception {
@@ -76,6 +75,15 @@ public class CouponController {
 		return coupon;
 	}
 
+
+	public List<Coupon> getCouponsByCompany(long companyId) throws Exception {
+		if(companyId <=0){
+			List<Coupon> coupons = (List<Coupon>) couponDao.findAll();
+			return coupons;
+		} else {
+			return couponDao.getCouponsByCompanyId(companyId);
+		}
+	}
 
 //	public Coupon getCouponByCompanyId(long companyId) throws Exception {
 //		Coupon coupon = couponDao.getCouponByCompanyId(companyId);

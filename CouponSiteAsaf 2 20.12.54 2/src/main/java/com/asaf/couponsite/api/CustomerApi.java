@@ -14,47 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/customer")
 public class CustomerApi {
-//Only create customer work
 	@Autowired
 	private CustomerController customerController;
 
-//	http://localhost:8080/customer
-	/* Create Customer in Customer and associated it to User
-	{"users":[
- {"userName":"Menni",
-  "password":"AAAAAAA1",
-  "userType":"CUSTOMER"
- }],
-
-  "firstName": "Menni",
-"lastName": "Mamtera",
-"address": "abcd 17",
-"email":"menni@mamtera.com"
-
-}
-	 */
-//	@PostMapping
-//	public void createCustomer(@RequestBody Customer customer) throws Exception {
-//		customerController.createCustomer(customer);
-//	}
-/*
-{
-  "customer":
-  {
-    "firstName": "Menni45678nijnn",
-"lastName": "Mamtera",
-"address": "abcd 17",
-"email":"menni@mamtera.com"
-  },
-  "users":
- {"userName":"Menni56789sdf",
-  "password":"AAAAAAA1",
-  "userType":"CUSTOMER"
- }
-}
-
-
- */
 	@PostMapping("/register")
 	public void registerCustomer(@RequestBody Registration registration) throws Exception {
 		customerController.registerCustomer(registration);

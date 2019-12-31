@@ -11,18 +11,15 @@ import java.util.List;
 public interface IUserDao extends CrudRepository<User, Long> {
 
 	@Query("SELECT u FROM User u WHERE u.userName= :userName AND u.password= :password")
-//	@Query("FROM User u WHERE u.userName=?:userName && u.password=? :password")
+
 	User findUserByUserNameAndPassword(@Param("userName") String userName, @Param("password") String password);
 
 	@Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.userName = :userName")
-//	@Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.userName=? :userName")
-	//	@Query("SELECT * FROM User u WHERE u.userName=?:userName")
+
 	boolean existsByName(@Param("userName") String userName);
 
 	@Query("SELECT u FROM User u WHERE u.id=:userId")
 	User findByUserId(@Param("userId") Long userId);
-
-	//	List<User> findByPassword(String password);
 
 	@Query("SELECT u FROM User u WHERE u.password=:password")
 	List<User> findByPassword(@Param("password") String password);

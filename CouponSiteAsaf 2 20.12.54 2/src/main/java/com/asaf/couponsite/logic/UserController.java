@@ -6,6 +6,7 @@ import com.asaf.couponsite.dao.IUserDao;
 import com.asaf.couponsite.data.LoggedInUserData;
 import com.asaf.couponsite.data.LoginResponseDataObject;
 import com.asaf.couponsite.entities.Company;
+import com.asaf.couponsite.entities.Customer;
 import com.asaf.couponsite.entities.User;
 import com.asaf.couponsite.enums.ErrorType;
 import com.asaf.couponsite.enums.UserType;
@@ -125,75 +126,42 @@ public class UserController {
 
     public LoginResponseDataObject login(String userName, String password) throws ApplicationException, UserNotFoundException {
         User user = getUserByUserNameAndPassword(userName, password);
-//        if (user == null) {
-//            throw new ApplicationException(ErrorType.LOGIN_FAILED, "Login failed. Please try again.");
-//        }
         long userId = user.getId();
         LoggedInUserData loggedInUserData;
         Company company = user.getCompany();
         UserType userType = user.getUserType();
+		Customer customer = user.getCustomer();
 
         switch (userType) {
             case ADMIN:
+				loggedInUserData = new LoggedInUserData(userType, (long) 0, userId, 0);
+				break;
             case CUSTOMER:
-                loggedInUserData = new LoggedInUserData(userType, userId);
+                loggedInUserData = new LoggedInUserData(userType, (long) 0, userId, customer.getId());
                 break;
             case COMPANY:
-//				Company company = user.getCompany();
-                loggedInUserData = new LoggedInUserData(userType, company.getId(), userId);
+                loggedInUserData = new LoggedInUserData(userType, company.getId(), userId, 0);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + userType);
         }
 
-
-//		Long companyId = user.getCompany().getId();
-//		Company company = user.getCompany();
-//		long userId = user.getId();
-//
-//		LoggedInUserData loggedInUserData;
-//
-//		if(company !=null) {
-//			loggedInUserData = new LoggedInUserData(userType, company.getId(), userId);
-//		} else {
-////			company.setId(0);
-//			loggedInUserData = new LoggedInUserData(userType, userId);
-//		}
-
-//		if(companyId != null) {
-//			loggedInUserData = new LoggedInUserData(userType, companyId, userId);
-//		}
-//		else {
-//			loggedInUserData = new LoggedInUserData(userType, userId);
-//		}
-
         int token = generateToken(userName, loggedInUserData);
-//		int token = 123;
         loggedInUserData.setToken(token);
 
-        // Converting the int into a String
         String strToken = String.valueOf(token);
-        // Save login user data in cache
+
         cacheController.put(strToken, loggedInUserData);
         LoginResponseDataObject loginResponseDataObject;
-        if (userType != UserType.COMPANY) {
-            loginResponseDataObject = new LoginResponseDataObject(token, loggedInUserData.getUserType(), userId, 0);
-        } else {
-            loginResponseDataObject = new LoginResponseDataObject(token, loggedInUserData.getUserType(), userId, company.getId());
+        if (userType == UserType.CUSTOMER) {
+            loginResponseDataObject = new LoginResponseDataObject(token, loggedInUserData.getUserType(), userId, -1,customer.getId());
+        } else if(userType == UserType.COMPANY) {
+            loginResponseDataObject = new LoginResponseDataObject(token, loggedInUserData.getUserType(), userId, company.getId(), 0);
+        }else {
+            loginResponseDataObject = new LoginResponseDataObject(token, loggedInUserData.getUserType(), userId, -1, 0);
         }
         return loginResponseDataObject;
     }
-
-
-//	public LoginResponseDataObject login(String userName, String password) throws HibernateException, UserNotFoundException {
-//		User user  = getUserByUserNameAndPassword(userName, password);
-//		UserType  userType = user.getUserType();
-//		int token = user.hashCode();
-//		LoginResponseDataObject loginResponseDataObject = new LoginResponseDataObject(userType, token, user.getId(), user.getCompany() == null ? -1 : user.getCompany().getId());
-//		cacheController.put(loginResponseDataObject.getUserId(),loginResponseDataObject.getToken());
-//
-//		return loginResponseDataObject;
-//	}
 
     public User getUserByUserNameAndPassword(String userName, String password) throws
             HibernateException, UserNotFoundException {

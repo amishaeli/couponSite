@@ -25,21 +25,13 @@ public class UserApi {
 		return currentLoggedInUser;
 	}
 
-	//	http://localhost:8080/user/login
 	@PostMapping("/login")
 	public LoginResponseDataObject login(@RequestBody UserLoginDetailsDataObject userLoginDetails) throws HibernateException, UserNotFoundException {
 		System.out.println("userLoginDetails: " + userLoginDetails);
 		LoginResponseDataObject login = userController.login(userLoginDetails.getUserName(), userLoginDetails.getPassword());
 		return login;
 	}
-/*http://localhost:8080/user
-CREATE USER ONLY WITHOUT COMPANYID
-	{
-      "userName":"Admin2",
-      "password":"AAAAAAA1",
-      "userType":"ADMIN"
-}
- */
+
 	@PostMapping
 	public long createUser(@RequestBody User user) throws ApplicationException{
 		return userController.createUser(user);

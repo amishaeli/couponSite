@@ -60,7 +60,18 @@ public class Coupon implements Serializable {
     public Coupon() {
     }
 
-
+    public Coupon(Coupon coupon, Company company) {
+        this.id = coupon.id;
+        this.couponType = coupon.couponType;
+        this.title = coupon.title;
+        this.description = coupon.description;
+        this.createDate = coupon.createDate;
+        this.expirationDate = coupon.expirationDate;
+        this.amount = coupon.amount;
+        this.price = coupon.price;
+        this.image = coupon.image;
+        this.company=company;
+    }
 
     public Coupon(long id, CouponType couponType, String title, String description, Date createDate, Date expirationDate, int amount, float price, String image, Company company, List<Purchase> purchases) {
         this.id = id;

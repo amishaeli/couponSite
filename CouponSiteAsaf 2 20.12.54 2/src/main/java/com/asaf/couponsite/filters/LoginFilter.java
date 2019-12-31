@@ -4,131 +4,72 @@ import com.asaf.couponsite.cache.ICacheController;
 import com.asaf.couponsite.consts.Constants;
 import com.asaf.couponsite.data.LoggedInUserData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
 import javax.servlet.ServletException;
 import javax.servlet.*;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Component
 //@Order(2)
-public class LoginFilter implements Filter{
+public class LoginFilter implements Filter {
 
-	@Autowired
-	private ICacheController cacheController;
+    @Autowired
+    private ICacheController cacheController;
 
-	@Override
-	public void init(FilterConfig arg0) throws ServletException {
+    @Override
+    public void init(FilterConfig arg0) throws ServletException {
 
-	}
+    }
 
-//	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-//			throws IOException, ServletException {
-//
-//		HttpServletRequest req = (HttpServletRequest) request;
-//		HttpSession session = req.getSession(false);
-//		Cookie[] cookies = req.getCookies();
-//		String pageRequested = req.getRequestURL().toString();
-//		String pageMethod = req.getMethod();
-//
-//		if (req.getMethod().equals("OPTIONS")) {
-//			chain.doFilter(request, response);
-//			return;
-//		}
-//
-//
-//		if (session != null || pageRequested.endsWith("/login") || pageRequested.endsWith("/register")) {
-//			if (cookies != null) {
-//				for (Cookie cookie : cookies) {
-//					req.setAttribute(cookie.getName(), cookie.getValue());
-//				}
-//
-//			}
-//			chain.doFilter(request, response);
-//			return;
-//		}
-//
-//		HttpServletResponse res = (HttpServletResponse) response;
-//		// if the session is null, we set the status of the request to unauthorized
-//		res.setStatus(401);
-//		System.out.println("access denied");
-//	}
-
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
 
 
-		HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
 //		if (httpRequest.getMethod().equals("OPTIONS")) {
 //			chain.doFilter(httpRequest, response);
 //			return;
 //		}
 
-		String url = httpRequest.getRequestURL().toString();
+        String url = httpRequest.getRequestURL().toString();
 
-		if(url.endsWith("/register")) {
-			chain.doFilter(httpRequest, response);
-			return;
-		}
+        if (url.endsWith("/register")) {
+            chain.doFilter(httpRequest, response);
+            return;
+        }
 
-		if(url.endsWith("/login")) {
-			chain.doFilter(httpRequest, response);
-			return;
-		}
-//		if (url.contains("/company")) {
-//			chain.doFilter(httpRequest, response);
-//			return;
-//		}
-//		if (url.contains("/coupon")) {
-//			chain.doFilter(httpRequest, response);
-//			return;
-//		}
-//		if (url.contains("/purchase")) {
-//			chain.doFilter(httpRequest, response);
-//			return;
-//		}
-//		if (url.contains("/customer")) {
-//			chain.doFilter(httpRequest, response);
-//			return;
-//		}
-//		if (url.contains("/user")) {
-//			chain.doFilter(httpRequest, response);
-//			return;
-//		}
+        if (url.endsWith("/login")) {
+            chain.doFilter(httpRequest, response);
+            return;
+        }
 
-		//String token = request.getParameter("token");
-		String token = httpRequest.getHeader("Authorization");
+        //String token = request.getParameter("token");
+        String token = httpRequest.getHeader("Authorization");
 //		long tok = Integer.parseInt(token);
 
-		LoggedInUserData loggedInUserData = (LoggedInUserData) cacheController.get(token);
-		if(loggedInUserData != null) {
-			//			User not loggedIn
-			//			Move forward to the next filter in chain
-			// TAASE KAVUA
-			request.setAttribute(Constants.USER_DATA_KEY, loggedInUserData);
-			chain.doFilter(request, response);
-			return;
-		}
-
+        LoggedInUserData loggedInUserData = (LoggedInUserData) cacheController.get(token);
+        if (loggedInUserData != null) {
+            //			User not loggedIn
+            //			Move forward to the next filter in chain
+            // TAASE KAVUA
+            request.setAttribute(Constants.USER_DATA_KEY, loggedInUserData);
+            chain.doFilter(request, response);
+            return;
+        }
 
 //		token is not in cach or token is null
-		HttpServletResponse httpResponse = (HttpServletResponse) response;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-		int unAuthorizedError = 401;
-		httpResponse.setStatus(unAuthorizedError);
-	}
+        int unAuthorizedError = 401;
+        httpResponse.setStatus(unAuthorizedError);
+    }
 
-//	public void init(FilterConfig filterConfig) throws ServletException {
-//
-//	}
+    public void destroy() {
 
-	public void destroy() {
-
-	}
+    }
 
 }

@@ -2,59 +2,57 @@ package com.asaf.couponsite.data;
 
 public class UserLoginDetailsDataObject {
 
-	private String userName;
-	private String password;
-	private long companyId;
-	private long userId;
-	
-	public UserLoginDetailsDataObject() {
-	}
+    private String userName;
+    private String password;
+    private long companyId;
+    private long userId;
 
-	public UserLoginDetailsDataObject(String userName, String password, long companyId, long userId) {
-		this.userName = userName;
-		this.password = password;
-		this.companyId = companyId;
-		this.userId = userId;
-	}
+    public UserLoginDetailsDataObject() {
+    }
 
-	public UserLoginDetailsDataObject(String userName, String password) {
-		this.userName = userName;
-		this.password = password;
-	}
+    public UserLoginDetailsDataObject(String userName, String password, long companyId, long userId) {
+        this.userName = userName;
+        this.password = password;
+        this.companyId = companyId;
+        this.userId = userId;
+    }
 
-	public long getCompanyId() {
-		return companyId;
-	}
+    public UserLoginDetailsDataObject(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
 
-	public void setCompanyId(long companyId) {
-		this.companyId = companyId;
-	}
+    public long getCompanyId() {
+        return companyId;
+    }
 
-	public long getUserId() {
-		return userId;
-	}
+    public void setCompanyId(long companyId) {
+        this.companyId = companyId;
+    }
 
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
+    public long getUserId() {
+        return userId;
+    }
 
-	public String getUserName() {
-		return userName;
-	}
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	
-	
-	
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
 }

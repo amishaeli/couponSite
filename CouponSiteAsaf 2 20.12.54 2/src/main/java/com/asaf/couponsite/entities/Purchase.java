@@ -45,14 +45,7 @@ public class Purchase implements Serializable {
         this.customer = customer;
     }
 
-    public Purchase(int amount, Coupon coupon) {
-    }
 
-    public Purchase(int amount, long id) {
-    }
-
-    public Purchase(int amount, long couponId, long customerId) {
-    }
 
     public long getId() {
         return id;
