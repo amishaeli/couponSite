@@ -31,13 +31,19 @@ public class CouponApi {
     @PostMapping
     public void createCoupon(@RequestBody Coupon coupon, HttpServletRequest request) throws Exception {
         LoggedInUserData userData = (LoggedInUserData) request.getAttribute(Constants.USER_DATA_KEY);
-
         couponController.addCoupon(coupon, userData.getCompanyId());
     }
 
+    @PostMapping("/byComName")
+    public void createCouponByAdmin(@RequestBody Coupon coupon, String companyName) throws Exception {
+
+        couponController.addCouponByAdmin(coupon, companyName);
+    }
+
     @PutMapping
-    public void updateCoupon(@RequestBody Coupon coupon) throws Exception {
-        couponController.updateCoupon(coupon);
+    public void updateCoupon(@RequestBody Coupon coupon, HttpServletRequest request) throws Exception {
+        LoggedInUserData userData = (LoggedInUserData) request.getAttribute(Constants.USER_DATA_KEY);
+        couponController.updateCoupon(coupon, userData.getCompanyId());
     }
 
     @GetMapping("/{id}")

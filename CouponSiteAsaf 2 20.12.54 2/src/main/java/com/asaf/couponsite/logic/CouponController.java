@@ -48,7 +48,15 @@ public class CouponController {
 		couponDao.save(coupon);
 	}
 
-	public void updateCoupon(Coupon coupon) throws Exception {
+	public void addCouponByAdmin(Coupon coupon, String companyName) throws Exception {
+	Company company = companyDao.getByName(companyName);
+//		Company company = companyDao.findByCompanyId(companyId);
+		coupon.setCompany(company);
+
+		couponDao.save(coupon);
+	}
+
+	public void updateCoupon(Coupon coupon, long companyId) throws Exception {
 
 		Coupon originCoupon = getCouponById(coupon.getId());
 		String couponOriginName = originCoupon.getTitle();
@@ -59,8 +67,9 @@ public class CouponController {
 						+ "Error in couponController.updateCoupon(), coupon's name already exists.");
 			}
 		}
-		coupon.getCompany();
-		coupon.setCompany(coupon.getCompany());
+
+		Company company = companyDao.findByCompanyId(companyId);
+		coupon.setCompany(company);
 
 		validateCoupon(coupon);
 
